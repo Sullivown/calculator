@@ -5,6 +5,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color:steelblue;
 }
 
 #calculator-div {
@@ -14,9 +15,12 @@ body {
     flex-direction: column;
     align-items: stretch;
     justify-content: stretch;
+    margin: 15px;
     padding: 15px;
     border: 1px solid black;
     border-radius: 5px;
+    background-color: rgb(31, 30, 30);
+    box-shadow: 5px 5px 10px rgb(43, 43, 43);
 }
 
 #display-div {
@@ -26,6 +30,9 @@ body {
     height: 20%;
     margin-bottom: 15px;
     border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgb(163, 184, 204);
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.712);
 }
 
 #output-div {
@@ -52,7 +59,42 @@ button {
     width: 100%;
     height: 100%;
     font-size: 1.2em;
+    font-weight: bolder;
     font-family: 'Orbitron', sans-serif;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+
+.number {
+  background-color: grey;
+  color: whitesmoke;
+}
+
+.number:active {
+  background-color: darkgrey;
+}
+
+.symbol {
+  background-color: lightgrey;
+}
+
+.symbol:active {
+  background-color: whitesmoke;
+}
+
+.operator {
+  background-color: orange;
+  color: whitesmoke;
+}
+
+.operator:active {
+  background-color: whitesmoke;
+  color: orange;
+}
+
+.operator-active {
+  background-color: whitesmoke;
+  color: orange;
 }
 
 @keyframes rotation-0 {

@@ -8,11 +8,12 @@ let currentRotation = 0;
 // Selector variables
 const output = document.querySelector('#output-div');
 const calculator = document.querySelector('#calculator-div');
+const operatorButtons = document.querySelectorAll('.operator');
 
+// Add event listeners
 document.querySelectorAll('button').forEach(button => {
     button.addEventListener('click', handleInput);
 })
-
 document.addEventListener('keydown', handleInput);
 
 // Set initial display value
@@ -49,6 +50,11 @@ function handleInput(event) {
     let button = null;
     let buttonType = null;
 
+    // Remove the active class on any active operator buttons
+    operatorButtons.forEach(button => {
+        button.classList.remove('operator-active');
+    })
+
     // determine event type
     if (event.type === 'click') {
         button = this.dataset.button;
@@ -65,7 +71,6 @@ function handleInput(event) {
         handleSymbol(button);
     }
 }
-
 
 // Function for when a number is pressed
 function handleNumber(button) {
@@ -85,6 +90,13 @@ function handleNumber(button) {
 function handleOperator(button) {
     const sumArrayLength = currentSum.length;
 
+    // If button is not the equals sign, toggle the active class
+    if (button != 'equals') {
+        // Set button as active
+        const buttonElement = document.querySelector(`[data-button='${button}']`);
+        buttonElement.classList.add('operator-active');
+    }
+
     // If current sum array is empty or has 1 elements:
     if (!sumArrayLength || sumArrayLength === 1) {
         // add display to current sum array[0]
@@ -94,9 +106,11 @@ function handleOperator(button) {
         if (button != 'equals') {
             // add symbol to current sum array[1]
             currentSum[1] = button;
-        }
 
-        // HIGHLIGHT SYMBOL
+            // Set button as active
+            const buttonElement = document.querySelector(`[data-button='${button}']`);
+            buttonElement.classList.add('operator-active');
+        }
 
         // set new input value
         newInput = true;
@@ -126,7 +140,6 @@ function handleOperator(button) {
 
 // Function for when a symbol is pressed (neither a number or operator)
 function handleSymbol(button) {
-    
     switch(button) {
         case 'all-clear':
             allClear();
@@ -185,6 +198,7 @@ function decimal() {
     }
 }
 
+// Other functions
 function updateDisplay(value) {
     // takes an answer and shortens / fits it to the screen;
     if (isNaN(value)) {
@@ -204,7 +218,6 @@ function updateDisplay(value) {
 function getButtonValues(input) {
     let button = null;
     let buttonType = null;
-    console.log(input);
 
     // If the input is a number
     if (!isNaN(input)) {
@@ -260,5 +273,4 @@ function getButtonValues(input) {
 
     // if there are no matches, return null
     return [ null, null ]
-
 }
