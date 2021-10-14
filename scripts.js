@@ -10,11 +10,13 @@ const output = document.querySelector('#output-div');
 const calculator = document.querySelector('#calculator-div');
 
 document.querySelectorAll('button').forEach(button => {
-    button.addEventListener('click', buttonPress);
+    button.addEventListener('click', handleInput);
 })
 
+document.addEventListener('keydown', handleInput);
+
 // Set initial display value
-output.textContent = displayValue;
+updateDisplay(0);
 
 // Operator functions
 function add(a, b) {
@@ -42,10 +44,18 @@ function operate(operator, a, b) {
     return funcName(a, b);
 }
 
-// Helper functions
-function buttonPress() {
-    const button = this.dataset.button;
-    const buttonType = this.dataset.type;
+// Input handling
+function handleInput(event) {
+    let button = null;
+    let buttonType = null;
+
+    // determine event type
+    if (event.type === 'click') {
+        button = this.dataset.button;
+        buttonType = this.dataset.type;
+    } else if (event.type === 'keydown') {
+        [ button, buttonType ] = getButtonValues(event.key);
+    }
 
     if (buttonType === 'number') {
         handleNumber(button);
@@ -189,4 +199,66 @@ function updateDisplay(value) {
             setTimeout(() => {output.textContent = displayValue}, 1000)
         }
     }
+}
+
+function getButtonValues(input) {
+    let button = null;
+    let buttonType = null;
+    console.log(input);
+
+    // If the input is a number
+    if (!isNaN(input)) {
+        button = input;
+        buttonType = 'number';
+        return [ button, buttonType ];
+    }
+
+    // If the input is an operator
+    const operatorRegex = (/[\-\+\*\/=]/i);
+    if (input.match(operatorRegex)) {
+        switch(input) {
+            case '-':
+                button = 'subtract';
+                break;
+            
+            case '+':
+                button = 'add';
+                break;
+
+            case '*':
+                button = 'multiply';
+                break;
+
+            case '/':
+                button = 'divide';
+                break;
+            
+            case '=':
+                button = 'equals';
+                break;
+        }
+
+        buttonType = 'operator';
+        return [ button, buttonType ];
+    }
+
+    const symbolRegex = (/[.%]/i);
+    if (input.match(symbolRegex)) {
+        switch(input) {
+            case '.':
+                button = 'decimal';
+                break;
+
+            case '%':
+                button = 'percent';
+                break;
+        }
+
+        buttonType = 'symbol';
+        return [ button, buttonType ];
+    }
+
+    // if there are no matches, return null
+    return [ null, null ]
+
 }
